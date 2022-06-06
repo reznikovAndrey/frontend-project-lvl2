@@ -1,10 +1,26 @@
-import { test, expect, describe } from '@jest/globals';
+import {
+  test, expect, describe, beforeAll,
+} from '@jest/globals';
 import yaml from 'js-yaml';
+import fs from 'fs';
 
-import getParser from '../src/parsers.js';
+import getParsedData from '../src/parsers.js';
+import getFixturePath from './genDiff.test.js';
+
+let pathJSON;
+let parsedJSON;
+let pathYAML;
+let parsedYAML;
+
+beforeAll(() => {
+  pathJSON = getFixturePath('file1.json');
+  parsedJSON = JSON.parse(fs.readFileSync(pathJSON));
+  pathYAML = getFixturePath('file1.yaml');
+  parsedYAML = yaml.load(fs.readFileSync(pathYAML));
+});
 
 describe('test parser', () => {
-  test('json', () => expect(getParser('.json')).toEqual(JSON.parse));
-  test('yaml', () => expect(getParser('.yaml')).toEqual(yaml.load));
-  test('yml', () => expect(getParser('.yml')).toEqual(yaml.load));
+  test('json', () => expect(getParsedData(pathJSON)).toEqual(parsedJSON));
+  test('yaml', () => expect(getParsedData(pathYAML)).toEqual(parsedYAML));
+  test('yml', () => expect(getParsedData(pathYAML)).toEqual(parsedYAML));
 });

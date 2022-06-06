@@ -36,3 +36,5 @@ describe('test genDiff', () => {
     expect(genDiff(filepath1, filepath2)).toBe(expectData);
   });
 });
+
+export default getFixturePath;
