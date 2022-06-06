@@ -32,5 +32,5 @@ export default (filepath1, filepath2) => {
 
   const result = _.sortBy(data, (([, key]) => key)).map((arr) => arr.join(' ')).join('\n');
 
-  return `{${'\n'}${result}${'\n'}}`;
+  return `{\n${result}\n}`;
 };
