@@ -19,12 +19,19 @@ beforeAll(() => {
 
 describe('test genDiff', () => {
   test('empty', () => {
-    const filepath = getFixturePath('empty.json');
-    expect(genDiff(filepath, filepath)).toBe('{\n\n}');
+    const emptyJSON = getFixturePath('empty.json');
+    const emptyYAML = getFixturePath('empty.yaml');
+    expect(genDiff(emptyJSON, emptyYAML)).toBe('{\n\n}');
   });
 
-  test('mocks', () => {
+  test('same formats', () => {
     const filepath1 = getFixturePath('file1.json');
+    const filepath2 = getFixturePath('file2.json');
+    expect(genDiff(filepath1, filepath2)).toBe(expectData);
+  });
+
+  test('different formats', () => {
+    const filepath1 = getFixturePath('file1.yaml');
     const filepath2 = getFixturePath('file2.json');
     expect(genDiff(filepath1, filepath2)).toBe(expectData);
   });
