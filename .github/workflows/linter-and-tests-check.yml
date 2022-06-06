@@ -1,4 +1,4 @@
-name: eslint-check
+name: linter-and-tests-check
 
 on: push
 
@@ -13,3 +13,4 @@ jobs:
           node-version: '16.x'
       - run: make install
       - run: make lint
+      - run: make test
