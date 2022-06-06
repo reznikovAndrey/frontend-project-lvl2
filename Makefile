@@ -5,4 +5,7 @@ lint:
 	npx eslint .
 
 test:
-	npx --experimental-vm-modules jest
+	npx jest
+
+test-coverage:
+	npx jest --coverage
