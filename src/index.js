@@ -16,7 +16,7 @@ export default (filepath1, filepath2) => {
   const parser1 = getParser(getFileExt(filepath1));
   const parser2 = getParser(getFileExt(filepath2));
 
-  const fileObj1 = parser1(readFile(filepath1));
+  const fileObj1 = parser1(readFile(filepath1)) || {};
   const fileObj2 = parser2(readFile(filepath2)) || {};
 
   const keys = _.uniq([...Object.keys(fileObj1), ...Object.keys(fileObj2)]);
