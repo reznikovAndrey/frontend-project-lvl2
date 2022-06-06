@@ -7,14 +7,14 @@ import {
 
 import genDiff from '../src/index.js';
 
-let expectData;
+let expectedData;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 
 beforeAll(() => {
-  expectData = fs.readFileSync(getFixturePath('expect.txt')).toString();
+  expectedData = fs.readFileSync(getFixturePath('expect.txt')).toString();
 });
 
 describe('test genDiff', () => {
@@ -27,13 +27,13 @@ describe('test genDiff', () => {
   test('same formats', () => {
     const filepath1 = getFixturePath('file1.json');
     const filepath2 = getFixturePath('file2.json');
-    expect(genDiff(filepath1, filepath2)).toBe(expectData);
+    expect(genDiff(filepath1, filepath2)).toBe(expectedData);
   });
 
   test('different formats', () => {
     const filepath1 = getFixturePath('file1.yaml');
     const filepath2 = getFixturePath('file2.json');
-    expect(genDiff(filepath1, filepath2)).toBe(expectData);
+    expect(genDiff(filepath1, filepath2)).toBe(expectedData);
   });
 });
 
