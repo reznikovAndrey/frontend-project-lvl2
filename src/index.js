@@ -13,7 +13,7 @@ export default (filepath1, filepath2, { format }) => {
   const fileObj2 = getParsedData(filepath2);
 
   const iter = (obj1, obj2) => {
-    const keys = sortBy(Object.keys({ ...fileObj1, ...fileObj2 }));
+    const keys = sortBy(Object.keys({ ...obj1, ...obj2 }));
     return keys.map((key) => {
       if (!Object.hasOwn(obj1, key)) {
         return { key, type: 'added', value: obj2[key] };
