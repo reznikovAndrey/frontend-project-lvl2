@@ -1,4 +1,4 @@
-import isObject from 'lodash/isObject.js';
+import isPlainObject from 'lodash/isPlainObject.js';
 
 const SPACER = ' ';
 const INDENT = 4;
@@ -17,7 +17,7 @@ const makeNestedString = (flatStringsArr, spaceSize = 0) => [
 ].join('\n');
 
 const stringifyValue = (value, spaceSize) => {
-  if (isObject(value) && !Array.isArray(value)) {
+  if (isPlainObject(value)) {
     const arr = Object.entries(value)
       .map(([key, val]) => {
         const nestedVal = stringifyValue(val, spaceSize + INDENT);

@@ -1,29 +1,30 @@
-import sortBy from 'lodash/sortBy.js';
-import isObject from 'lodash/isObject.js';
-import has from 'lodash/has.js';
+import fs from 'fs';
+import path from 'path';
+import _ from 'lodash';
 
 import getParsedData from './parsers.js';
 import getFormattedData from './formatters/index.js';
 
-const checkChildren = (val1, val2) => (
-  (isObject(val1) && !Array.isArray(val1)) && (isObject(val2) && !Array.isArray(val2))
-);
+const checkChildren = (val1, val2) => (_.isPlainObject(val1) && _.isPlainObject(val2));
 
 export default (filepath1, filepath2, format = 'stylish') => {
-  const fileObj1 = getParsedData(filepath1);
-  const fileObj2 = getParsedData(filepath2);
+  const file1 = fs.readFileSync(path.resolve(process.cwd(), filepath1));
+  const file2 = fs.readFileSync(path.resolve(process.cwd(), filepath2));
+
+  const fileObj1 = getParsedData(file1, filepath1);
+  const fileObj2 = getParsedData(file2, filepath2);
 
   const iter = (obj1, obj2) => {
-    const keys = sortBy(Object.keys({ ...obj1, ...obj2 }));
+    const keys = _.sortBy(Object.keys({ ...obj1, ...obj2 }));
     return keys.map((key) => {
-      if (!has(obj1, key)) {
+      if (!_.has(obj1, key)) {
         return { key, type: 'added', value: obj2[key] };
       }
-      if (!has(obj2, key)) {
+      if (!_.has(obj2, key)) {
         return { key, type: 'removed', value: obj1[key] };
       }
-      const isChildren = checkChildren(obj1[key], obj2[key]);
-      if (isChildren) {
+      const haveChildren = checkChildren(obj1[key], obj2[key]);
+      if (haveChildren) {
         return { key, type: 'nested', children: iter(obj1[key], obj2[key]) };
       }
       return obj1[key] === obj2[key]

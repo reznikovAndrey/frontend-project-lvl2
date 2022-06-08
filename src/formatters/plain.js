@@ -1,4 +1,4 @@
-import isObject from 'lodash/isObject.js';
+import _ from 'lodash';
 
 const makeAddedLine = (key, value) => `Property '${key}' was added with value: ${value}`;
 
@@ -7,10 +7,10 @@ const makeRemovedLine = (key) => `Property '${key}' was removed`;
 const makeChangedLine = (key, oldVal, newVal) => `Property '${key}' was updated. From ${oldVal} to ${newVal}`;
 
 const stringifyValue = (val) => {
-  if (isObject(val) && !Array.isArray(val)) {
+  if (_.isPlainObject(val)) {
     return '[complex value]';
   }
-  if (typeof val === 'string') {
+  if (_.isString(val)) {
     return `'${val}'`;
   }
   return val;

@@ -1,9 +1,7 @@
 import yaml from 'js-yaml';
-import fs from 'fs';
 import path from 'path';
 
-export default (filepath) => {
-  const file = fs.readFileSync(path.resolve(process.cwd(), filepath));
+export default (file, filepath) => {
   const fileExt = path.extname(filepath);
 
   switch (fileExt) {
