@@ -7,33 +7,35 @@ import {
 
 import genDiff from '../src/index.js';
 
-let expectedData;
+let filepathEmptyJSON;
+let filepathEmptyYAML;
+let filepathJSON1;
+let filepathJSON2;
+let expectedDataStylish;
+let expectedDataPlain;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 
 beforeAll(() => {
-  expectedData = fs.readFileSync(getFixturePath('expect.txt')).toString();
+  filepathEmptyJSON = getFixturePath('empty.json');
+  filepathEmptyYAML = getFixturePath('empty.yaml');
+  filepathJSON1 = getFixturePath('file1.json');
+  filepathJSON2 = getFixturePath('file2.json');
+  expectedDataStylish = fs.readFileSync(getFixturePath('expect-stylish.txt')).toString();
+  expectedDataPlain = fs.readFileSync(getFixturePath('expect-plain.txt')).toString();
 });
 
 describe('test genDiff', () => {
-  test('empty', () => {
-    const emptyJSON = getFixturePath('empty.json');
-    const emptyYAML = getFixturePath('empty.yaml');
-    expect(genDiff(emptyJSON, emptyYAML, { format: 'stylish' })).toBe('{\n\n}');
+  test('test stylish format', () => {
+    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, { format: 'stylish' })).toBe('{\n\n}');
+    expect(genDiff(filepathJSON1, filepathJSON2, { format: 'stylish' })).toBe(expectedDataStylish);
   });
 
-  test('same formats', () => {
-    const filepath1 = getFixturePath('file1.json');
-    const filepath2 = getFixturePath('file2.json');
-    expect(genDiff(filepath1, filepath2, { format: 'stylish' })).toBe(expectedData);
-  });
-
-  test('different formats', () => {
-    const filepath1 = getFixturePath('file1.yaml');
-    const filepath2 = getFixturePath('file2.json');
-    expect(genDiff(filepath1, filepath2, { format: 'stylish' })).toBe(expectedData);
+  test('test plain format', () => {
+    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, { format: 'plain' })).toBe('');
+    expect(genDiff(filepathJSON1, filepathJSON2, { format: 'plain' })).toBe(expectedDataPlain);
   });
 });
 

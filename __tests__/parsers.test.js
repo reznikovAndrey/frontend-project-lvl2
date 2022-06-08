@@ -23,4 +23,7 @@ describe('test parser', () => {
   test('json', () => expect(getParsedData(pathJSON)).toEqual(parsedJSON));
   test('yaml', () => expect(getParsedData(pathYAML)).toEqual(parsedYAML));
   test('yml', () => expect(getParsedData(pathYAML)).toEqual(parsedYAML));
+  test('same data from different formats', () => {
+    expect(getParsedData(pathJSON)).toEqual(getParsedData(pathYAML));
+  });
 });
