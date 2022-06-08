@@ -1,10 +1,7 @@
 import yaml from 'js-yaml';
-import path from 'path';
 
-export default (file, filepath) => {
-  const fileExt = path.extname(filepath);
-
-  switch (fileExt) {
+export default (file, ext) => {
+  switch (ext) {
     case '.json':
       return JSON.parse(file) || {};
     case '.yaml':
@@ -12,6 +9,6 @@ export default (file, filepath) => {
     case '.yml':
       return yaml.load(file) || {};
     default:
-      throw new Error(`Unknown file format: ${fileExt}`);
+      throw new Error(`Unknown file format: ${ext}`);
   }
 };

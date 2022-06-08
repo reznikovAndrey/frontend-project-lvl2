@@ -3,25 +3,25 @@ import isPlainObject from 'lodash/isPlainObject.js';
 const SPACER = ' ';
 const INDENT = 4;
 
-const generateSpace = (size) => SPACER.repeat(size);
+const genSpace = (size) => SPACER.repeat(size);
 
 const makeFlatString = (key, value, spaceSize, sign = '') => {
-  const dataString = sign ? `${sign} ${key}: ${value}` : `${key}: ${value}`;
-  return [generateSpace(spaceSize), dataString].join('');
+  const data = sign ? [sign, `${key}:`, `${value}`].join(' ') : [`${key}:`, `${value}`].join(' ');
+  return [genSpace(spaceSize), data].join('');
 };
 
 const makeNestedString = (flatStringsArr, spaceSize = 0) => [
   '{',
   flatStringsArr.join('\n'),
-  `${generateSpace(spaceSize)}}`,
+  `${genSpace(spaceSize)}}`,
 ].join('\n');
 
 const stringifyValue = (value, spaceSize) => {
   if (isPlainObject(value)) {
     const arr = Object.entries(value)
       .map(([key, val]) => {
-        const nestedVal = stringifyValue(val, spaceSize + INDENT);
-        return makeFlatString(key, nestedVal, spaceSize);
+        const stringifiedValue = stringifyValue(val, spaceSize + INDENT);
+        return makeFlatString(key, stringifiedValue, spaceSize);
       });
     return makeNestedString(arr, spaceSize - INDENT);
   }
@@ -32,23 +32,26 @@ export default (nodes) => {
   const iter = ({
     type, key, value, valuesObj, children,
   }, spaceSize = 4) => {
+    const stringifiedValue = stringifyValue(value, spaceSize + INDENT);
     switch (type) {
       case 'added':
-        return makeFlatString(key, stringifyValue(value, spaceSize + INDENT), spaceSize - INDENT / 2, '+');
+        return makeFlatString(key, stringifiedValue, spaceSize - INDENT / 2, '+');
       case 'removed':
-        return makeFlatString(key, stringifyValue(value, spaceSize + INDENT), spaceSize - INDENT / 2, '-');
+        return makeFlatString(key, stringifiedValue, spaceSize - INDENT / 2, '-');
       case 'nested': {
         const childrenArr = children.map((child) => iter(child, spaceSize + INDENT));
-        const nestedValue = makeNestedString(childrenArr, spaceSize);
-        return makeFlatString(key, nestedValue, spaceSize);
+        const nestedData = makeNestedString(childrenArr, spaceSize);
+        return makeFlatString(key, nestedData, spaceSize);
       }
       case 'unchanged':
         return makeFlatString(key, stringifyValue(value, spaceSize + INDENT), spaceSize);
       case 'changed': {
         const { oldValue, newValue } = valuesObj;
+        const stringifiedOldVal = stringifyValue(oldValue, spaceSize + INDENT);
+        const stringifiedNewVal = stringifyValue(newValue, spaceSize + INDENT);
         return [
-          makeFlatString(key, stringifyValue(oldValue, spaceSize + INDENT), spaceSize - INDENT / 2, '-'),
-          makeFlatString(key, stringifyValue(newValue, spaceSize + INDENT), spaceSize - INDENT / 2, '+'),
+          makeFlatString(key, stringifiedOldVal, spaceSize - INDENT / 2, '-'),
+          makeFlatString(key, stringifiedNewVal, spaceSize - INDENT / 2, '+'),
         ].join('\n');
       }
       default:
