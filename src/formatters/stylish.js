@@ -55,7 +55,7 @@ export default (nodes) => {
         ].join('\n');
       }
       default:
-        return null;
+        throw new Error(`Unknown state ${type}`);
     }
   };
 

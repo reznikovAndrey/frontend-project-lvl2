@@ -33,8 +33,10 @@ export default (nodes) => {
         const { oldValue, newValue } = valuesObj;
         return makeChangedLine(keyProp, stringifyValue(oldValue), stringifyValue(newValue));
       }
-      default:
+      case 'unchanged':
         return null;
+      default:
+        throw new Error(`Unknown state: ${type}`);
     }
   };
 
