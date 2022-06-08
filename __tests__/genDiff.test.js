@@ -31,18 +31,18 @@ beforeAll(() => {
 
 describe('test genDiff', () => {
   test('test stylish format', () => {
-    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, { format: 'stylish' })).toBe('{\n\n}');
-    expect(genDiff(filepathJSON1, filepathJSON2, { format: 'stylish' })).toBe(expectedDataStylish);
+    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, 'stylish')).toBe('{\n\n}');
+    expect(genDiff(filepathJSON1, filepathJSON2, 'stylish')).toBe(expectedDataStylish);
   });
 
   test('test plain format', () => {
-    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, { format: 'plain' })).toBe('');
-    expect(genDiff(filepathJSON1, filepathJSON2, { format: 'plain' })).toBe(expectedDataPlain);
+    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, 'plain')).toBe('');
+    expect(genDiff(filepathJSON1, filepathJSON2, 'plain')).toBe(expectedDataPlain);
   });
 
   test('test json format', () => {
-    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, { format: 'json' })).toBe(JSON.stringify([]));
-    expect(genDiff(filepathJSON1, filepathJSON2, { format: 'json' })).toBe(expectedDataJSON);
+    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, 'json')).toBe(JSON.stringify([]));
+    expect(genDiff(filepathJSON1, filepathJSON2, 'json')).toBe(expectedDataJSON);
   });
 });
 

@@ -8,7 +8,7 @@ const checkChildren = (val1, val2) => (
   (isObject(val1) && !Array.isArray(val1)) && (isObject(val2) && !Array.isArray(val2))
 );
 
-export default (filepath1, filepath2, { format }) => {
+export default (filepath1, filepath2, format) => {
   const fileObj1 = getParsedData(filepath1);
   const fileObj2 = getParsedData(filepath2);
 
