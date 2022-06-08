@@ -32,7 +32,7 @@ beforeAll(() => {
 describe('test genDiff', () => {
   test('test stylish format', () => {
     expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, 'stylish')).toBe('{\n\n}');
-    expect(genDiff(filepathJSON1, filepathJSON2, 'stylish')).toBe(expectedDataStylish);
+    expect(genDiff(filepathJSON1, filepathJSON2)).toBe(expectedDataStylish);
   });
 
   test('test plain format', () => {
