@@ -7,43 +7,44 @@ import {
 
 import genDiff from '../src/index.js';
 
-let filepathEmptyJSON;
-let filepathEmptyYAML;
-let filepathJSON1;
-let filepathJSON2;
-let expectedDataStylish;
-let expectedDataPlain;
-let expectedDataJSON;
+const data = {};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 
 beforeAll(() => {
-  filepathEmptyJSON = getFixturePath('empty.json');
-  filepathEmptyYAML = getFixturePath('empty.yaml');
-  filepathJSON1 = getFixturePath('file1.json');
-  filepathJSON2 = getFixturePath('file2.json');
-  expectedDataStylish = fs.readFileSync(getFixturePath('expect-stylish.txt')).toString();
-  expectedDataPlain = fs.readFileSync(getFixturePath('expect-plain.txt')).toString();
-  expectedDataJSON = fs.readFileSync(getFixturePath('expect-json.txt')).toString();
+  data.filepathEmptyJSON = getFixturePath('empty.json');
+  data.filepathEmptyYAML = getFixturePath('empty.yaml');
+  data.filepathJSON1 = getFixturePath('file1.json');
+  data.filepathJSON2 = getFixturePath('file2.json');
+  data.expectedDataStylish = fs.readFileSync(getFixturePath('expect-stylish.txt')).toString();
+  data.expectedDataPlain = fs.readFileSync(getFixturePath('expect-plain.txt')).toString();
+  data.expectedDataJSON = fs.readFileSync(getFixturePath('expect-json.txt')).toString();
 });
 
 describe('test genDiff', () => {
-  test('test stylish format', () => {
+  test('stylish', () => {
+    const {
+      filepathEmptyJSON, filepathEmptyYAML, filepathJSON1, filepathJSON2, expectedDataStylish,
+    } = data;
     expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, 'stylish')).toBe('{\n\n}');
     expect(genDiff(filepathJSON1, filepathJSON2)).toBe(expectedDataStylish);
   });
 
-  test('test plain format', () => {
+  test('plain', () => {
+    const {
+      filepathEmptyJSON, filepathEmptyYAML, filepathJSON1, filepathJSON2, expectedDataPlain,
+    } = data;
     expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, 'plain')).toBe('');
     expect(genDiff(filepathJSON1, filepathJSON2, 'plain')).toBe(expectedDataPlain);
   });
 
-  test('test json format', () => {
+  test('json', () => {
+    const {
+      filepathEmptyJSON, filepathEmptyYAML, filepathJSON1, filepathJSON2, expectedDataJSON,
+    } = data;
     expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, 'json')).toBe(JSON.stringify([]));
     expect(genDiff(filepathJSON1, filepathJSON2, 'json')).toBe(expectedDataJSON);
   });
 });
-
-export default getFixturePath;
