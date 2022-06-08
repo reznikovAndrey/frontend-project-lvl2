@@ -1,5 +1,6 @@
 import sortBy from 'lodash/sortBy.js';
 import isObject from 'lodash/isObject.js';
+import has from 'lodash/has.js';
 
 import getParsedData from './parsers.js';
 import getFormattedData from './formatters/index.js';
@@ -15,10 +16,10 @@ export default (filepath1, filepath2, format) => {
   const iter = (obj1, obj2) => {
     const keys = sortBy(Object.keys({ ...obj1, ...obj2 }));
     return keys.map((key) => {
-      if (!Object.hasOwn(obj1, key)) {
+      if (!has(obj1, key)) {
         return { key, type: 'added', value: obj2[key] };
       }
-      if (!Object.hasOwn(obj2, key)) {
+      if (!has(obj2, key)) {
         return { key, type: 'removed', value: obj1[key] };
       }
       const isChildren = checkChildren(obj1[key], obj2[key]);
