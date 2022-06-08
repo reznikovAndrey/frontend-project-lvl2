@@ -33,20 +33,17 @@ export default (nodes) => {
     type, key, value, valuesObj, children,
   }, spaceSize = 4) => {
     switch (type) {
-      case 'added': {
+      case 'added':
         return makeFlatString(key, stringifyValue(value, spaceSize + INDENT), spaceSize - INDENT / 2, '+');
-      }
-      case 'removed': {
+      case 'removed':
         return makeFlatString(key, stringifyValue(value, spaceSize + INDENT), spaceSize - INDENT / 2, '-');
-      }
       case 'nested': {
         const childrenArr = children.map((child) => iter(child, spaceSize + INDENT));
         const nestedValue = makeNestedString(childrenArr, spaceSize);
         return makeFlatString(key, nestedValue, spaceSize);
       }
-      case 'unchanged': {
+      case 'unchanged':
         return makeFlatString(key, stringifyValue(value, spaceSize + INDENT), spaceSize);
-      }
       case 'changed': {
         const { oldValue, newValue } = valuesObj;
         return [
