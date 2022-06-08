@@ -13,6 +13,7 @@ let filepathJSON1;
 let filepathJSON2;
 let expectedDataStylish;
 let expectedDataPlain;
+let expectedDataJSON;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,6 +26,7 @@ beforeAll(() => {
   filepathJSON2 = getFixturePath('file2.json');
   expectedDataStylish = fs.readFileSync(getFixturePath('expect-stylish.txt')).toString();
   expectedDataPlain = fs.readFileSync(getFixturePath('expect-plain.txt')).toString();
+  expectedDataJSON = fs.readFileSync(getFixturePath('expect-json.txt')).toString();
 });
 
 describe('test genDiff', () => {
@@ -36,6 +38,11 @@ describe('test genDiff', () => {
   test('test plain format', () => {
     expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, { format: 'plain' })).toBe('');
     expect(genDiff(filepathJSON1, filepathJSON2, { format: 'plain' })).toBe(expectedDataPlain);
+  });
+
+  test('test json format', () => {
+    expect(genDiff(filepathEmptyJSON, filepathEmptyYAML, { format: 'json' })).toBe(JSON.stringify([]));
+    expect(genDiff(filepathJSON1, filepathJSON2, { format: 'json' })).toBe(expectedDataJSON);
   });
 });
 
