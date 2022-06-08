@@ -5,6 +5,6 @@ export default (format, data) => {
     case 'stylish':
       return toStylish(data);
     default:
-      return null;
+      throw new Error(`Unknown output format: ${format}`);
   }
 };

@@ -14,6 +14,6 @@ export default (filepath) => {
     case '.yml':
       return yaml.load(file) || {};
     default:
-      return null;
+      throw new Error(`Unknown file format: ${fileExt}`);
   }
 };
